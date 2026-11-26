@@ -3,234 +3,294 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AksaraEdu | TKA SMP 2027</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulasi TKA | AksaraEdu</title>
 <style>
-:root {
-  --blue:#174b85;
-  --navy:#10345e;
-  --light:#edf5ff;
-  --text:#20334b;
-}
-* {box-sizing:border-box}
-body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f8fc;
-  color:var(--text);
-}
-header {
-  background:white;
-  padding:16px 7%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 2px 12px #0000000b;
-}
-.logo {font-size:21px;font-weight:800;color:var(--blue)}
-.logo span {color:#f0a72f}
-nav a {
-  text-decoration:none;
-  color:#344b65;
-  margin-left:22px;
-  font-size:14px;
-  font-weight:600;
-}
-.hero {
-  background:linear-gradient(120deg,#10345e,#2166a7);
-  color:white;
-  padding:75px 8%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:30px;
-}
-.hero-content {max-width:650px}
-.tag {
-  background:#ffffff20;
-  display:inline-block;
-  padding:9px 15px;
-  border-radius:30px;
-  font-size:12px;
-  letter-spacing:1px;
-}
-.hero h1 {font-size:42px;line-height:1.2;margin:22px 0 12px}
-.hero p {color:#d9e9fa;line-height:1.8}
-.school {
-  background:white;
-  color:var(--blue);
-  padding:25px;
-  border-radius:18px;
-  min-width:210px;
-  text-align:center;
-  box-shadow:0 12px 35px #071e3c40;
-}
-.school .symbol {font-size:45px}
-.school strong {display:block;margin-top:10px}
-.school small {color:#6c7f94}
-.btn {
-  display:inline-block;
-  background:#f5b53c;
-  color:#173451;
-  border:0;
-  border-radius:9px;
-  padding:13px 21px;
-  font-weight:bold;
-  text-decoration:none;
-  cursor:pointer;
-  margin-top:15px;
-}
-main {padding:45px 8%;max-width:1300px;margin:auto}
-.section-title {margin-bottom:8px;font-size:25px}
-.subtitle {color:#718198;margin-bottom:25px;line-height:1.6}
-.cards {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:17px;
-}
-.card {
-  background:white;
-  padding:23px;
-  border-radius:14px;
-  border:1px solid #e7edf5;
-  box-shadow:0 5px 20px #17385d08;
-}
-.card .icon {font-size:30px}
-.card h3 {font-size:17px;margin:13px 0 8px}
-.card p {font-size:13px;color:#718198;line-height:1.6}
-.card button {
-  border:0;
-  background:var(--light);
-  color:var(--blue);
-  padding:10px 13px;
-  border-radius:7px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.info {
-  margin-top:35px;
-  background:white;
-  padding:25px;
-  border-radius:14px;
-  border-left:5px solid #f0ae37;
-}
-footer {
-  background:var(--navy);
-  color:white;
-  text-align:center;
-  padding:28px 15px;
-  margin-top:45px;
-  font-size:13px;
-  line-height:1.8;
-}
-footer span {color:#f5bd4e}
-@media(max-width:850px) {
-  .cards {grid-template-columns:repeat(2,1fr)}
-  .hero {padding:50px 7%}
-  .hero h1 {font-size:34px}
-}
-@media(max-width:550px) {
-  header {padding:15px 5%;flex-wrap:wrap;gap:12px}
-  nav {width:100%;display:flex;gap:16px;overflow-x:auto}
-  nav a {margin:0;white-space:nowrap}
-  .hero {display:block;padding:45px 6%}
-  .hero h1 {font-size:31px}
-  .school {margin-top:28px}
-  main {padding:35px 5%}
-  .cards {grid-template-columns:1fr}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f6fc;color:#20334b}
+header{background:#123b70;color:white;padding:17px 6%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:21px;font-weight:bold}
+.logo span{color:#ffc34d}
+header small{font-size:11px;color:#dceaff}
+main{max-width:1000px;margin:35px auto;padding:0 16px}
+.panel{background:white;border-radius:15px;padding:25px;box-shadow:0 5px 25px #15375d0c}
+h1{font-size:26px;margin-top:0;color:#174b85}
+h2{font-size:20px}
+.muted{color:#72839a;line-height:1.6;font-size:14px}
+label{display:block;font-weight:bold;font-size:13px;margin:15px 0 7px}
+input,select{width:100%;padding:13px;border:1px solid #d5dfeb;border-radius:8px;font-size:15px;background:white}
+button{border:0;border-radius:8px;padding:12px 18px;font-weight:bold;cursor:pointer}
+.primary{background:#174b85;color:white}
+.secondary{background:#eaf2fc;color:#174b85}
+.warning{background:#fff1dc;color:#89530a}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:hover{filter:brightness(.96)}
+.full{width:100%;margin-top:20px}
+.hidden{display:none!important}
+.info{background:#edf5ff;padding:14px;border-radius:9px;font-size:13px;line-height:1.7;margin:18px 0}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.timer{background:#fff0e9;color:#b74b22;padding:12px 17px;border-radius:9px;font-weight:bold}
+.progress{height:7px;background:#e8eef6;border-radius:20px;overflow:hidden;margin:15px 0}
+.progress div{height:100%;background:#2584cf;width:0}
+.question{font-size:18px;line-height:1.7;font-weight:bold;margin:25px 0}
+.option{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid #dce4ee;border-radius:9px;margin:10px 0;cursor:pointer;line-height:1.5}
+.option:hover{background:#f4f8ff}
+.option input{width:auto;margin-top:3px}
+.option.selected{border-color:#2879c5;background:#edf5ff}
+.navigation{display:flex;gap:10px;justify-content:space-between;margin-top:25px}
+.numbers{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:12px}
+.num{background:#edf2f8;color:#344b65;padding:11px 4px}
+.num.active{background:#174b85;color:white}
+.num.done{background:#d9f1e4;color:#17683d}
+.result{text-align:center;padding:15px}
+.score{font-size:54px;color:#174b85;font-weight:bold;margin:15px}
+.review{padding:15px;background:#f6f8fb;border-radius:9px;margin:12px 0;line-height:1.7;font-size:14px}
+.correct{color:#16814b;font-weight:bold}
+.wrong{color:#c34637;font-weight:bold}
+footer{text-align:center;color:#8290a3;font-size:12px;padding:25px}
+@media(max-width:600px){
+main{margin:18px auto}
+.panel{padding:18px}
+h1{font-size:22px}
+.question{font-size:16px}
+.navigation button{padding:11px 12px}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Aksara<span>Edu</span></div>
-  <nav>
-    <a href="#beranda">Beranda</a>
-    <a href="#layanan">Layanan</a>
-    <a href="#informasi">Informasi</a>
-  </nav>
+ <div class="logo">Aksara<span>Edu</span></div>
+ <small>SIMULASI TKA SMP 2027</small>
 </header>
 
-<section class="hero" id="beranda">
-  <div class="hero-content">
-    <div class="tag">PLATFORM PENDIDIKAN DIGITAL</div>
-    <h1>SIMULASI TKA<br>SMP 2027</h1>
-    <p>
-      Selamat datang di platform latihan dan simulasi
-      Tes Kemampuan Akademik (TKA) SMP Negeri 1 Cipeundeuy.
-      Persiapkan diri, tingkatkan kemampuan, dan raih hasil terbaik.
-    </p>
-    <a href="#layanan" class="btn">Mulai Belajar →</a>
-  </div>
-  <div class="school">
-    <div class="symbol">🎓</div>
-    <strong>SMP NEGERI 1 CIPEUNDEUY</strong>
-    <small>Belajar • Berlatih • Berprestasi</small>
-  </div>
+<main>
+
+<!-- HALAMAN IDENTITAS -->
+<section id="start" class="panel">
+ <h1>Simulasi TKA SMP 2027</h1>
+ <p class="muted">SMP NEGERI 1 CIPEUNDEUY</p>
+ <div class="info">
+  Selamat datang di simulasi ujian AksaraEdu.
+  Isi identitas dengan benar sebelum memulai pengerjaan.
+ </div>
+
+ <label>Nama lengkap peserta</label>
+ <input id="nama" placeholder="Masukkan nama lengkap">
+
+ <label>Kelas</label>
+ <select id="kelas">
+  <option value="">Pilih kelas</option>
+  <option>IX A</option><option>IX B</option>
+  <option>IX C</option><option>IX D</option>
+  <option>IX E</option><option>IX F</option>
+  <option>IX G</option><option>IX H</option>
+  <option>IX I</option>
+ </select>
+
+ <label>Mata pelajaran</label>
+ <select id="mapel">
+  <option value="">Pilih mata pelajaran</option>
+  <option value="indonesia">Bahasa Indonesia</option>
+  <option value="matematika">Matematika</option>
+ </select>
+
+ <div class="info">
+  <b>Petunjuk:</b><br>
+  1. Bacalah setiap soal dengan teliti.<br>
+  2. Pilih satu jawaban yang paling tepat.<br>
+  3. Gunakan tombol navigasi untuk berpindah soal.<br>
+  4. Periksa kembali jawaban sebelum dikumpulkan.<br>
+  5. Waktu simulasi adalah 15 menit.
+ </div>
+
+ <button class="primary full" onclick="mulai()">MULAI SIMULASI →</button>
 </section>
 
-<main>
-  <section id="layanan">
-    <h2 class="section-title">Menu Pembelajaran</h2>
-    <p class="subtitle">
-      Pilih layanan yang tersedia untuk mempersiapkan diri
-      menghadapi TKA 2027.
-    </p>
+<!-- HALAMAN UJIAN -->
+<section id="ujian" class="panel hidden">
+ <div class="topline">
+  <div>
+   <b id="peserta"></b>
+   <div class="muted" id="keterangan"></div>
+  </div>
+  <div class="timer">⏱ <span id="waktu">15:00</span></div>
+ </div>
 
-    <div class="cards">
-      <div class="card">
-        <div class="icon">📝</div>
-        <h3>Simulasi TKA</h3>
-        <p>Latihan ujian dengan sistem pengerjaan soal.</p>
-        <button onclick="info('Simulasi TKA')">Buka Menu</button>
-      </div>
+ <div class="progress"><div id="bar"></div></div>
+ <div class="topline">
+  <b id="nomor">Soal 1</b>
+  <small class="muted" id="terjawab">0 dijawab</small>
+ </div>
 
-      <div class="card">
-        <div class="icon">📚</div>
-        <h3>Latihan Soal</h3>
-        <p>Kerjakan soal latihan untuk mengukur kemampuan.</p>
-        <button onclick="info('Latihan Soal')">Buka Menu</button>
-      </div>
+ <div id="pertanyaan" class="question"></div>
+ <div id="pilihan"></div>
 
-      <div class="card">
-        <div class="icon">📖</div>
-        <h3>Materi Pembelajaran</h3>
-        <p>Pelajari materi sebagai persiapan menghadapi ujian.</p>
-        <button onclick="info('Materi Pembelajaran')">Buka Menu</button>
-      </div>
+ <div class="navigation">
+  <button class="secondary" id="prev" onclick="pindah(-1)">← Sebelumnya</button>
+  <button class="primary" id="next" onclick="pindah(1)">Berikutnya →</button>
+ </div>
 
-      <div class="card">
-        <div class="icon">📊</div>
-        <h3>Hasil Evaluasi</h3>
-        <p>Informasi hasil latihan dan evaluasi kemampuan.</p>
-        <button onclick="info('Hasil Evaluasi')">Buka Menu</button>
-      </div>
-    </div>
-  </section>
+ <hr style="border:0;border-top:1px solid #e6edf5;margin:25px 0">
+ <b>Daftar nomor soal</b>
+ <p class="muted">Hijau = sudah dijawab. Biru = soal aktif.</p>
+ <div id="nomors" class="numbers"></div>
+ <button class="warning full" onclick="kumpulkan()">SELESAI DAN KUMPULKAN JAWABAN</button>
+</section>
 
-  <section class="info" id="informasi">
-    <h3>📢 Informasi TKA 2027</h3>
-    <p>
-      Website ini merupakan media pembelajaran dan simulasi
-      yang dikembangkan untuk peserta didik SMP Negeri 1 Cipeundeuy.
-      Informasi dan soal akan diperbarui sesuai kebutuhan sekolah.
-    </p>
-  </section>
+<!-- HALAMAN HASIL -->
+<section id="hasil" class="panel hidden">
+ <div class="result">
+  <div style="font-size:45px">🏆</div>
+  <h1>Simulasi Selesai!</h1>
+  <p class="muted" id="namaHasil"></p>
+  <div class="score" id="nilai">0</div>
+  <b>Nilai Simulasi</b>
+  <p id="detail" class="muted"></p>
+ </div>
+ <div class="info">
+  <b>Catatan:</b> Hasil ini merupakan hasil latihan pada perangkat yang sedang digunakan. Belum dikirim ke database sekolah.
+ </div>
+ <h2>Pembahasan Jawaban</h2>
+ <div id="pembahasan"></div>
+ <button class="primary full" onclick="location.reload()">ULANGI SIMULASI</button>
+</section>
+
 </main>
 
 <footer>
-  <strong>Aksara<span>Edu</span></strong><br>
-  SIMULASI TKA SMP 2027<br>
-  SMP NEGERI 1 CIPEUNDEUY<br>
-  <small>Platform Pendidikan Digital | © 2027</small>
+ <b>AksaraEdu</b> | SMP Negeri 1 Cipeundeuy<br>
+ Platform Simulasi TKA SMP 2027
 </footer>
 
 <script>
-function info(menu) {
-  alert(menu + " akan segera tersedia. Nantikan pembaruan AksaraEdu!");
+const bankSoal = {
+ indonesia: [
+  {q:"Gagasan utama dalam sebuah paragraf biasanya disebut ...",o:["Kalimat penjelas","Ide pokok","Kata penghubung","Kesimpulan akhir"],a:1,e:"Ide pokok merupakan inti pembahasan dalam sebuah paragraf."},
+  {q:"Tujuan utama teks prosedur adalah ...",o:["Menghibur pembaca","Menceritakan pengalaman","Menjelaskan langkah melakukan sesuatu","Menggambarkan suatu tempat"],a:2,e:"Teks prosedur berisi tahapan atau petunjuk melakukan sesuatu."},
+  {q:"Kalimat yang menggunakan ejaan yang tepat adalah ...",o:["Ibu membeli sayur di pasar.","ibu Membeli Sayur di Pasar.","Ibu membeli Sayur di pasar","ibu membeli sayur Di pasar."],a:0,e:"Awal kalimat menggunakan huruf kapital dan penulisan kata lainnya sesuai kaidah."},
+  {q:"Berikut yang termasuk unsur intrinsik cerita adalah ...",o:["Penerbit","Harga buku","Tokoh dan alur","Nama percetakan"],a:2,e:"Tokoh dan alur merupakan unsur pembangun cerita dari dalam."},
+  {q:"Kalimat efektif adalah kalimat yang ...",o:["Bertele-tele","Jelas dan hemat kata","Selalu panjang","Menggunakan banyak istilah asing"],a:1,e:"Kalimat efektif menyampaikan gagasan secara jelas, tepat, dan tidak berlebihan."}
+ ],
+ matematika: [
+  {q:"Hasil dari 25 × 4 + 20 adalah ...",o:["100","110","120","130"],a:2,e:"25 × 4 = 100, kemudian 100 + 20 = 120."},
+  {q:"Jika 3x + 5 = 20, nilai x adalah ...",o:["3","4","5","6"],a:2,e:"3x = 20 - 5 = 15, sehingga x = 5."},
+  {q:"Luas persegi dengan panjang sisi 8 cm adalah ...",o:["16 cm²","32 cm²","64 cm²","80 cm²"],a:2,e:"Luas persegi = sisi × sisi = 8 × 8 = 64 cm²."},
+  {q:"Rata-rata dari 6, 8, 10, 12, dan 14 adalah ...",o:["8","9","10","12"],a:2,e:"Jumlah data 50 dibagi 5 menghasilkan 10."},
+  {q:"Sebuah segitiga memiliki alas 12 cm dan tinggi 8 cm. Luasnya adalah ...",o:["24 cm²","48 cm²","60 cm²","96 cm²"],a:1,e:"Luas segitiga = ½ × alas × tinggi = 48 cm²."}
+ ]
+};
+
+let soal=[],jawaban=[],indeks=0,sisa=900,timer=null,selesai=false;
+
+function mulai(){
+ const nama=document.getElementById("nama").value.trim();
+ const kelas=document.getElementById("kelas").value;
+ const mapel=document.getElementById("mapel").value;
+ if(!nama||!kelas||!mapel){
+  alert("Lengkapi nama, kelas, dan mata pelajaran terlebih dahulu.");
+  return;
+ }
+ soal=bankSoal[mapel];
+ jawaban=Array(soal.length).fill(null);
+ indeks=0;sisa=900;selesai=false;
+ document.getElementById("start").classList.add("hidden");
+ document.getElementById("ujian").classList.remove("hidden");
+ document.getElementById("peserta").textContent=nama;
+ document.getElementById("keterangan").textContent=kelas+" • "+(mapel==="indonesia"?"Bahasa Indonesia":"Matematika");
+ tampilkan();
+ hitungWaktu();
+ timer=setInterval(hitungWaktu,1000);
+}
+
+function tampilkan(){
+ const s=soal[indeks];
+ document.getElementById("nomor").textContent="Soal "+(indeks+1)+" dari "+soal.length;
+ document.getElementById("pertanyaan").textContent=s.q;
+ document.getElementById("pilihan").innerHTML="";
+ s.o.forEach((pilihan,i)=>{
+  const label=document.createElement("label");
+  label.className="option"+(jawaban[indeks]===i?" selected":"");
+  const radio=document.createElement("input");
+  radio.type="radio";radio.name="jawaban";radio.checked=jawaban[indeks]===i;
+  radio.addEventListener("change",()=>{jawaban[indeks]=i;tampilkan();});
+  const teks=document.createElement("span");
+  teks.textContent=String.fromCharCode(65+i)+". "+pilihan;
+  label.append(radio,teks);
+  document.getElementById("pilihan").appendChild(label);
+ });
+ document.getElementById("prev").disabled=indeks===0;
+ document.getElementById("next").textContent=indeks===soal.length-1?"Soal terakhir":"Berikutnya →";
+ document.getElementById("terjawab").textContent=jawaban.filter(x=>x!==null).length+" dijawab";
+ document.getElementById("bar").style.width=(jawaban.filter(x=>x!==null).length/soal.length*100)+"%";
+ buatNomor();
+}
+
+function buatNomor(){
+ const area=document.getElementById("nomors");
+ area.innerHTML="";
+ soal.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.textContent=i+1;
+  b.className="num"+(i===indeks?" active":jawaban[i]!==null?" done":"");
+  b.onclick=()=>{indeks=i;tampilkan()};
+  area.appendChild(b);
+ });
+}
+
+function pindah(arah){
+ if(indeks+arah<0||indeks+arah>=soal.length)return;
+ indeks+=arah;tampilkan();
+}
+
+function hitungWaktu(){
+ const menit=Math.floor(sisa/60);
+ const detik=sisa%60;
+ document.getElementById("waktu").textContent=
+ String(menit).padStart(2,"0")+":"+String(detik).padStart(2,"0");
+ if(sisa<=0){clearInterval(timer);tampilkanHasil();}
+ else{sisa--;}
+}
+
+function kumpulkan(){
+ const kosong=jawaban.filter(x=>x===null).length;
+ if(!confirm("Anda yakin ingin mengumpulkan jawaban? "+kosong+" soal belum dijawab."))return;
+ clearInterval(timer);
+ tampilkanHasil();
+}
+
+function tampilkanHasil(){
+ if(selesai)return;
+ selesai=true;
+ clearInterval(timer);
+ let benar=0;
+ soal.forEach((s,i)=>{if(jawaban[i]===s.a)benar++});
+ const nilai=Math.round(benar/soal.length*100);
+ document.getElementById("ujian").classList.add("hidden");
+ document.getElementById("hasil").classList.remove("hidden");
+ document.getElementById("namaHasil").textContent=document.getElementById("nama").value;
+ document.getElementById("nilai").textContent=nilai;
+ document.getElementById("detail").textContent=
+ benar+" benar • "+(soal.length-benar)+" salah atau tidak dijawab • "+soal.length+" soal";
+ const area=document.getElementById("pembahasan");
+ area.innerHTML="";
+ soal.forEach((s,i)=>{
+  const benarJawaban=jawaban[i]===s.a;
+  const div=document.createElement("div");
+  div.className="review";
+  const status=document.createElement("b");
+  status.className=benarJawaban?"correct":"wrong";
+  status.textContent=benarJawaban?"✓ Benar":"✗ Salah / belum dijawab";
+  const pertanyaan=document.createElement("p");
+  pertanyaan.textContent=(i+1)+". "+s.q;
+  const pilihan=document.createElement("p");
+  pilihan.textContent="Jawaban benar: "+String.fromCharCode(65+s.a)+". "+s.o[s.a];
+  const penjelasan=document.createElement("p");
+  penjelasan.textContent="Pembahasan: "+s.e;
+  div.append(status,pertanyaan,pilihan,penjelasan);
+  area.appendChild(div);
+ });
 }
 </script>
-
 </body>
 </html>
