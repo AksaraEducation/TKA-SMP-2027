@@ -14,6 +14,17 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Fungsi SECURITY DEFINER menghindari policy membaca tabel profiles melalui RLS yang sama.
+create or replace function public.is_aksara_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $
+  select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
+$;
+
 drop policy if exists "Users can read own profile" on public.profiles;
 create policy "Users can read own profile" on public.profiles
 for select to authenticated using (id = auth.uid());
@@ -21,21 +32,21 @@ for select to authenticated using (id = auth.uid());
 drop policy if exists "Admins can read all profiles" on public.profiles;
 create policy "Admins can read all profiles" on public.profiles
 for select to authenticated using (
-  exists (select 1 from public.profiles me where me.id = auth.uid() and me.role = 'admin')
+  public.is_aksara_admin()
 );
 
 drop policy if exists "Admins can insert profiles" on public.profiles;
 create policy "Admins can insert profiles" on public.profiles
 for insert to authenticated with check (
-  exists (select 1 from public.profiles me where me.id = auth.uid() and me.role = 'admin')
+  public.is_aksara_admin()
 );
 
 drop policy if exists "Admins can update profiles" on public.profiles;
 create policy "Admins can update profiles" on public.profiles
 for update to authenticated using (
-  exists (select 1 from public.profiles me where me.id = auth.uid() and me.role = 'admin')
+  public.is_aksara_admin()
 ) with check (
-  exists (select 1 from public.profiles me where me.id = auth.uid() and me.role = 'admin')
+  public.is_aksara_admin()
 );
 
 create or replace function public.handle_new_user()
