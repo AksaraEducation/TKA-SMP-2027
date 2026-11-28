@@ -21,9 +21,14 @@ language sql
 stable
 security definer
 set search_path = ''
-as $
-  select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
-$;
+as $$
+  select exists (
+    select 1
+    from public.profiles
+    where id = auth.uid()
+      and role = 'admin'
+  );
+$$;
 
 drop policy if exists "Users can read own profile" on public.profiles;
 create policy "Users can read own profile" on public.profiles
