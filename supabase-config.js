@@ -1,7 +1,6 @@
-// Konfigurasi publik Supabase untuk AksaraEdu.
-// Isi SUPABASE_URL dan SUPABASE_ANON_KEY dari Supabase > Project Settings > API.
-// Gunakan anon/public key saja. JANGAN masukkan service_role key atau password rahasia.
+// Konfigurasi publik Supabase AksaraEdu.
+// Aman untuk frontend: gunakan publishable/anon key, bukan secret/service_role.
 window.AKSARA_SUPABASE_CONFIG = {
-  SUPABASE_URL: "ISI_URL_PROJECT_SUPABASE_DI_SINI",
-  SUPABASE_ANON_KEY: "ISI_ANON_PUBLIC_KEY_DI_SINI"
+  SUPABASE_URL: "https://xsyarqrybmhhdwowszrc.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_Vn-C0NaAmDrtUYOZG9EL2g_yM7JADin"
 };
