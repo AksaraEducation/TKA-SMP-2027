@@ -27,6 +27,17 @@ td small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.actions
 <h1>Manajemen Pengguna</h1>
 <p class="intro">Kelola nama dan peran akun yang sudah terdaftar di AksaraEdu. Perubahan hanya dapat dilakukan oleh administrator.</p>
 <div id="status" class="status">Memeriksa akses administrator...</div>
+<section class="panel" style="padding:20px;margin:18px 0">
+<h2 style="margin:0 0 8px;color:var(--navy);font-size:19px">Tambah Akun Guru atau Siswa</h2>
+<p class="intro" style="margin-bottom:14px">Buat akun login baru. Gunakan kata sandi awal minimal 8 karakter dan sampaikan kepada pemilik akun secara pribadi.</p>
+<form id="addUserForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;align-items:end">
+<label style="font-size:13px;font-weight:700">Nama lengkap<input id="newName" type="text" autocomplete="name" placeholder="Nama guru atau siswa" required style="display:block;width:100%;margin-top:6px"></label>
+<label style="font-size:13px;font-weight:700">Email akun<input id="newEmail" type="email" autocomplete="email" placeholder="nama@email.com" required style="display:block;width:100%;margin-top:6px"></label>
+<label style="font-size:13px;font-weight:700">Kata sandi awal<input id="newPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter" required style="display:block;width:100%;margin-top:6px"></label>
+<label style="font-size:13px;font-weight:700">Peran<select id="newRole" required style="display:block;width:100%;margin-top:6px"><option value="student">Siswa</option><option value="teacher">Guru</option></select></label>
+<button class="primary" id="createBtn" type="submit">Buat Akun</button>
+</form>
+</section>
 <div class="toolbar"><input id="searchInput" type="search" placeholder="Cari nama atau ID akun..."><button class="secondary" id="refreshBtn">Muat ulang</button></div>
 <section class="panel"><table><thead><tr><th>Nama Pengguna</th><th>ID Akun</th><th>Peran</th><th>Aksi</th></tr></thead><tbody id="usersBody"><tr><td colspan="4" class="empty">Memuat data pengguna...</td></tr></tbody></table></section>
 </main>
@@ -61,6 +72,20 @@ async function saveUser(event){
  if(error){status('Perubahan gagal disimpan: '+error.message,true);return}
  status('Perubahan untuk '+name+' berhasil disimpan.');await loadUsers();
 }
+document.getElementById('addUserForm').addEventListener('submit',async(event)=>{
+ event.preventDefault();
+ const button=document.getElementById('createBtn');
+ const payload={full_name:document.getElementById('newName').value.trim(),email:document.getElementById('newEmail').value.trim(),password:document.getElementById('newPassword').value,role:document.getElementById('newRole').value};
+ if(payload.password.length<8){status('Kata sandi awal minimal 8 karakter.',true);return}
+ button.disabled=true;button.textContent='Membuat akun...';
+ const {data,error}=await client.functions.invoke('create-user',{body:payload});
+ button.disabled=false;button.textContent='Buat Akun';
+ if(error){status('Pembuatan akun gagal: '+(data?.error||error.message)+'. Pastikan Edge Function sudah dipasang dan aktif.',true);return}
+ if(data?.error){status('Pembuatan akun gagal: '+data.error,true);return}
+ document.getElementById('addUserForm').reset();
+ status(data?.message||'Akun berhasil dibuat.');
+ await loadUsers();
+});
 async function init(){
  const {data:{session},error}=await client.auth.getSession();
  if(error||!session){location.href='./login.html';return}
