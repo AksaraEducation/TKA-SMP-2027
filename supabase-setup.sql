@@ -14,6 +14,10 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Hak akses dasar untuk membaca profil dan memperbarui profil melalui kebijakan RLS.
+grant usage on schema public to authenticated;
+grant select, update on table public.profiles to authenticated;
+
 -- Fungsi SECURITY DEFINER menghindari policy membaca tabel profiles melalui RLS yang sama.
 create or replace function public.is_aksara_admin()
 returns boolean
