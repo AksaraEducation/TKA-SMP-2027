@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123d69"><title>Manajemen Pengguna | AksaraEdu</title>
+<style>
+:root{--navy:#10345e;--blue:#174b85;--gold:#f0ad35;--ink:#20334b;--muted:#687b91;--line:#e4ebf3}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f8fc;color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:15px 6%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:22px;font-weight:800;color:var(--blue)}.brand span{color:var(--gold)}
+button,a.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;text-decoration:none;font-size:14px}
+.secondary{background:#eef4fb;color:var(--blue)}.primary{background:var(--blue);color:#fff}.container{max-width:1100px;margin:auto;padding:30px 6%}
+h1{color:var(--navy);margin:0 0 8px}.intro{color:var(--muted);line-height:1.6;margin:0 0 22px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}
+input,select{border:1px solid #d6e0eb;border-radius:9px;padding:11px 12px;font-size:14px;background:white;color:var(--ink)}
+input{flex:1;min-width:220px}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px}th{background:#f8fafd;color:var(--navy)}
+td small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.status{padding:14px 16px;border-radius:10px;background:#fff8e8;color:#76500d;line-height:1.5;margin:16px 0;font-size:14px}
+.error{background:#fff0f0;color:#a52828}.empty{padding:25px;text-align:center;color:var(--muted)}
+@media(max-width:650px){header{padding:13px 5%}.container{padding:24px 5%}.panel{overflow-x:auto}table{min-width:650px}}
+</style>
+</head>
+<body>
+<header><div class="brand">Aksara<span>Edu</span></div><div class="actions"><a class="btn secondary" href="./dashboard.html">Dashboard</a><button class="secondary" id="logoutBtn">Keluar</button></div></header>
+<main class="container">
+<h1>Manajemen Pengguna</h1>
+<p class="intro">Kelola nama dan peran akun yang sudah terdaftar di AksaraEdu. Perubahan hanya dapat dilakukan oleh administrator.</p>
+<div id="status" class="status">Memeriksa akses administrator...</div>
+<div class="toolbar"><input id="searchInput" type="search" placeholder="Cari nama atau ID akun..."><button class="secondary" id="refreshBtn">Muat ulang</button></div>
+<section class="panel"><table><thead><tr><th>Nama Pengguna</th><th>ID Akun</th><th>Peran</th><th>Aksi</th></tr></thead><tbody id="usersBody"><tr><td colspan="4" class="empty">Memuat data pengguna...</td></tr></tbody></table></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./supabase-config.js"></script>
+<script>
+const cfg=window.AKSARA_SUPABASE_CONFIG||{};
+const client=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
+const statusBox=document.getElementById('status'),body=document.getElementById('usersBody');
+let currentUserId='',users=[];
+function status(message,isError=false){statusBox.textContent=message;statusBox.className=isError?'status error':'status'}
+function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function loadUsers(){
+ body.innerHTML='<tr><td colspan="4" class="empty">Memuat data pengguna...</td></tr>';
+ const {data,error}=await client.from('profiles').select('id,full_name,role,created_at').order('created_at',{ascending:false});
+ if(error){status('Gagal memuat pengguna: '+error.message,true);body.innerHTML='<tr><td colspan="4" class="empty">Data belum dapat ditampilkan.</td></tr>';return}
+ users=data||[];renderUsers();status('Berhasil memuat '+users.length+' akun. Ubah nama atau peran, lalu tekan Simpan.');
+}
+function renderUsers(){
+ const term=document.getElementById('searchInput').value.trim().toLowerCase();
+ const filtered=users.filter(u=>(u.full_name||'').toLowerCase().includes(term)||u.id.toLowerCase().includes(term));
+ if(!filtered.length){body.innerHTML='<tr><td colspan="4" class="empty">Tidak ada pengguna yang cocok.</td></tr>';return}
+ body.innerHTML=filtered.map(u=>'<tr data-id="'+esc(u.id)+'"><td><input class="name" aria-label="Nama pengguna" value="'+esc(u.full_name)+'" placeholder="Nama lengkap"></td><td><small>'+esc(u.id)+'</small></td><td><select class="role" aria-label="Peran pengguna" '+(u.id===currentUserId?'disabled title="Peran akun admin yang sedang digunakan tidak dapat diubah di halaman ini"':'')+'><option value="student" '+(u.role==='student'?'selected':'')+'>Siswa</option><option value="teacher" '+(u.role==='teacher'?'selected':'')+'>Guru</option><option value="admin" '+(u.role==='admin'?'selected':'')+'>Admin</option></select></td><td><button class="primary saveBtn">Simpan</button></td></tr>').join('');
+ body.querySelectorAll('.saveBtn').forEach(btn=>btn.addEventListener('click',saveUser));
+}
+async function saveUser(event){
+ const tr=event.currentTarget.closest('tr'),id=tr.dataset.id,name=tr.querySelector('.name').value.trim(),role=tr.querySelector('.role').value;
+ if(!name){status('Nama pengguna tidak boleh kosong.',true);return}
+ if(id===currentUserId&&role!=='admin'){status('Peran akun admin yang sedang digunakan tidak dapat diubah.',true);return}
+ event.currentTarget.disabled=true;event.currentTarget.textContent='Menyimpan...';
+ const {error}=await client.from('profiles').update({full_name:name,role}).eq('id',id);
+ event.currentTarget.disabled=false;event.currentTarget.textContent='Simpan';
+ if(error){status('Perubahan gagal disimpan: '+error.message,true);return}
+ status('Perubahan untuk '+name+' berhasil disimpan.');await loadUsers();
+}
+async function init(){
+ const {data:{session},error}=await client.auth.getSession();
+ if(error||!session){location.href='./login.html';return}
+ currentUserId=session.user.id;
+ const {data:profile,error:profileError}=await client.from('profiles').select('role').eq('id',currentUserId).single();
+ if(profileError||!profile){status('Profil admin tidak dapat dibaca. '+(profileError?.message||''),true);body.innerHTML='';return}
+ if(profile.role!=='admin'){status('Akses ditolak. Halaman ini hanya untuk administrator.',true);body.innerHTML='';return}
+ await loadUsers();
+}
+document.getElementById('searchInput').addEventListener('input',renderUsers);
+document.getElementById('refreshBtn').addEventListener('click',loadUsers);
+document.getElementById('logoutBtn').addEventListener('click',async()=>{await client.auth.signOut();location.href='./login.html'});
+init();
+</script>
+</body></html>
